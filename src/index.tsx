@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Component, ReactNode } from "react";
+import { set_path } from "@xialvjun/js-utils";
 
 export interface ElementProps {
   construct?(ele, props: ElementProps): void;
@@ -41,4 +42,19 @@ export class Element extends Component<ElementProps> {
     const { children } = this.props;
     return typeof children === "function" ? children(this) : children || null;
   }
+}
+
+
+export const init_value = value => ele => {
+  ele.value = value;
+  ele.setValue = value => {
+    ele.value = value;
+    ele.forceUpdate();
+  };
+  ele.set_partial = (path, path_value) => ele.setValue(set_path(ele.value, path, path_value));
+}
+
+export const init_state = state => ele => {
+  ele.state = state;
+  ele.set_partial = (path, path_value) => ele.setState(set_path(ele.state, path, path_value));
 }
