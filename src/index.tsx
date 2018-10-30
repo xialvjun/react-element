@@ -47,14 +47,15 @@ export class Element extends Component<ElementProps> {
 
 export const init_value = value => ele => {
   ele.value = value;
-  ele.setValue = value => {
+  ele.set_value = (value, callback) => {
     ele.value = value;
-    ele.forceUpdate();
+    ele.forceUpdate(callback);
   };
   ele.set_partial = (path, path_value) => ele.setValue(set_path(ele.value, path, path_value));
 }
 
 export const init_state = state => ele => {
   ele.state = state;
+  ele.set_state = (...args) => ele.setState(...args);
   ele.set_partial = (path, path_value) => ele.setState(set_path(ele.state, path, path_value));
 }
