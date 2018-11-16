@@ -1,6 +1,6 @@
 {
   "name": "@xialvjun/react-element",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A very simple component, just offering the React.Component API, to write logic just in JSX.",
   "repository": "github:xialvjun/react-element",
   "keywords": [
@@ -16,7 +16,8 @@
     "typescript": "^3.1.3"
   },
   "dependencies": {
-    "@xialvjun/js-utils": "^0.3.1"
+    "@xialvjun/js-utils": "^0.3.1",
+    "immutagen": "^1.0.8"
   },
   "================": "================",
   "author": "xialvjun@live.com",
