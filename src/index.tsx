@@ -86,10 +86,7 @@ const compose = ({ next, value }) =>
     ? React.cloneElement(value, null, (...args) => compose(next(args)))
     : value;
 
-export function genc(gen_fn: GeneratorFunction, that?) {
-  if (arguments.length < 2) {
-    that = this;
-  }
-  gen_fn = immutagen(gen_fn.bind(that));
+export const genc = (gen_fn: GeneratorFunction) => {
+  gen_fn = immutagen(gen_fn);
   return (...args) => compose(gen_fn(...args) as any);
 }
