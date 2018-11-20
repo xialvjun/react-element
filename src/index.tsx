@@ -88,6 +88,7 @@ const compose = ({ next, value }) => {
       if (value.prototype.isReactComponent) {
         return React.createElement(value, null, children);
       }
+      // better compose to make it possible: yield ({ children }) => <OldRenderPropsComponent render={children} />
       return value({ children });
     }
     if (React.isValidElement(value)) {
@@ -101,72 +102,4 @@ const compose = ({ next, value }) => {
 export const genc = (gen_fn: GeneratorFunction) => {
   gen_fn = immutagen(gen_fn);
   return (...args) => compose(gen_fn(...args) as any);
-};
-
-// // gen_component_plain is impossible because you need <Result>{_ => if (previous_args) xxx else xxx }</Result>...
-// // 也就是每个 yield 都需要深一层的 <Result> 来获取 previous_args 来做 yield 后面的逻辑判断，于是组件深度是与 gen_component_hell 是一样的
-// export const gencp = (gen_fn: GeneratorFunction) => {
-//   gen_fn = immutagen(gen_fn);
-//   return (...args) => {
-//     const gen = gen_fn(...args);
-
-//     const compose = ({ next, value }, eles) => {
-//       if (next) {
-//         // let g;
-//         // eles.concat(React.cloneElement(value, null, (...args) => {
-//         //   g = next(args);
-//         // }))
-//         // return compose(g, eles);
-
-//         // const ele = React.cloneElement(value, null, (...args) => {
-//         //   compose(next(args),  eles.concat(ele));
-//         // })
-//         // return;
-
-//         let g;
-//         const ele = React.cloneElement(value, null, (...args) => {
-//           g = next(args);
-//           return null;
-//         });
-//         return compose(g, eles.concat(ele));
-//       }
-//       return eles.concat(value)
-//     }
-
-//     let eles = [];
-
-//     const { next, value } = gen.next() as any;
-//     if (next) {
-//       return React.cloneElement(value as any, null, (...args) => {
-//         const { next, value } = gen.next(args) as any;
-
-//       });
-//     }
-//   }
-// }
-
-// ! nearly right gencp
-// gen_component_plain is impossible because you need <Result>{_ => if (previous_args) xxx else xxx }</Result>...
-// 也就是每个 yield 都需要深一层的 <Result> 来获取 previous_args 来做 yield 后面的逻辑判断，于是组件深度是与 gen_component_hell 是一样的
-const Lazy = ({ chidlren }) => chidlren();
-export const gencp = (gen_fn: GeneratorFunction) => {
-  gen_fn = immutagen(gen_fn);
-  return (...args) => {
-    const gen = gen_fn(...args);
-    const compose = ({ next, value }) => {
-      if (next) {
-        let g, lazy;
-        const ele = React.cloneElement(value, null, (...args) => {
-          g = next(args);
-          lazy.forceUpdate();
-          return null;
-        });
-        return [ele].concat(
-          (React.createElement as any)(Lazy, { ref: e => (lazy = e) }, _ => compose(g))
-        );
-      }
-      return value;
-    };
-    return compose(gen as any);
-  };
 };
