@@ -1,10 +1,11 @@
 {
   "name": "@xialvjun/react-element",
-  "version": "0.0.7",
-  "description": "A very simple component, just offering the React.Component API, to write logic just in JSX.",
+  "version": "0.0.8",
+  "description": "A very simple component, just offering the React.Component API, to write logic just in JSX. With a `genc(generator component)` helper.",
   "repository": "github:xialvjun/react-element",
   "keywords": [
-    "react"
+    "react",
+    "generator"
   ],
   "----------------": "----------------",
   "peerDependencies": {
