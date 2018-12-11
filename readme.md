@@ -1,5 +1,5 @@
 # react-element
-A very simple component, just offering the React.Component API, to write logic just in JSX. With a `genc(generator component)` helper.
+A very simple component, just offering the React.Component API, to write logic just in JSX. With a `genc(generator component)` helper shamelessly copied and slightly modified from [Astrocoders/epitath](https://github.com/Astrocoders/epitath).
 
 ## Install
 `npm i @xialvjun/react-element` or `yarn add @xialvjun/react-element`
