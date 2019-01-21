@@ -45,13 +45,13 @@ export const init_value = value => ele => {
     ele.value = value;
     ele.forceUpdate(callback);
   };
-  ele.set_partial = (path, path_value) => ele.set_value(set_path(ele.value, path, path_value));
+  ele.set_partial = (path, path_value, callback) => ele.set_value(set_path(ele.value, path, path_value), callback);
 };
 
 export const init_state = state => ele => {
   ele.state = state;
   ele.set_state = (...args) => ele.setState(...args);
-  ele.set_partial = (path, path_value) => ele.set_state(set_path(ele.state, path, path_value));
+  ele.set_partial = (path, path_value, callback) => ele.set_state(set_path(ele.state, path, path_value), callback);
 };
 
 export const init_ref = (name: string) => ele => {
