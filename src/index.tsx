@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Component, ReactNode } from "react";
-import { set_path } from "@xialvjun/js-utils";
+import { get_path, set_path } from "@xialvjun/js-utils";
 import immutagen from "immutagen";
 
 export interface ElementProps {
@@ -45,7 +45,9 @@ export const init_value = value => ele => {
     ele.value = value;
     ele.forceUpdate(callback);
   };
-  ele.set_partial = (path, path_value, callback) => ele.set_value(set_path(ele.value, path, path_value), callback);
+  ele.set = ele.set_partial = (path, path_value, callback) => ele.set_value(set_path(ele.value, path, path_value), callback);
+  ele.get = ele.get_partial = path => get_path(ele.value, path);
+  ele.merge = ele.set_state = (value, callback) => ele.set_value(Object.assign({}, ele.value, value), callback);
 };
 
 export const init_state = state => ele => {
@@ -59,13 +61,13 @@ export const init_ref = (name: string) => ele => {
   ele[name] = React.createRef();
 };
 
-export const init_refs = (name: string) => ele => {
+export const init_refs = (name: string, use_create_ref: boolean=true) => ele => {
   ele[name] = new Proxy(
     {},
     {
       get(obj, prop) {
         if (!obj[prop]) {
-          obj[prop] = React.createRef();
+          const ref = obj[prop] = use_create_ref ? React.createRef() : e => (ref as any).current = e;
         }
         return obj[prop];
       }
